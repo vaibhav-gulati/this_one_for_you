@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://kit.fontawesome.com/a14ae32021.js" crossorigin="anonymous"></script>
+<meta charset="utf-8" />
+<title>This one for you madamji</title>
+
+<style type="text/css">
+@font-face {
+	font-family: digit;
+	src: url('digital-7_mono.ttf') format("truetype");
+}
+
+.photoTrigger {
+	margin: 8px 0;
+	padding: 8px 14px;
+	color: #7ec8e3;
+	cursor: pointer;
+	font-style: italic;
+	border-left: 2px solid #4a90d9;
+	transition: background 0.2s ease, color 0.2s ease;
+}
+.photoTrigger:hover {
+	background: rgba(74, 144, 217, 0.12);
+	color: #a0d4f7;
+}
+
+#photoOverlay {
+	display: none;
+	position: fixed;
+	top: 0; left: 0;
+	width: 100%; height: 100%;
+	background: rgba(5, 12, 28, 0.95);
+	z-index: 9999;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+#photoOverlay.active {
+	display: flex;
+}
+#photoOverlayImg {
+	max-width: 90%;
+	max-height: 78vh;
+	border-radius: 6px;
+	box-shadow: 0 0 40px rgba(74, 144, 217, 0.35);
+}
+#photoClose {
+	position: absolute;
+	top: 20px; right: 28px;
+	font-size: 28px;
+	color: #a0c4e8;
+	cursor: pointer;
+	opacity: 0.7;
+	transition: opacity 0.2s ease;
+}
+#photoClose:hover {
+	opacity: 1;
+}
+#photoCaption {
+	margin-top: 18px;
+	color: #90b8d8;
+	font-size: 15px;
+	font-style: italic;
+	text-align: center;
+	max-width: 80%;
+}
+</style>
+
+<link href="css/default.css" type="text/css" rel="stylesheet">
+<script src="js/jquery.js"></script>
+<script src="js/garden.js"></script>
+<script src="js/functions.js"></script>
+
+</head>
+
+<body>
+
+<div id="mainDiv">
+	<div id="content">
+
+		<!-- LEFT SIDE TEXT -->
+		<div id="code">
+			<span class="comments">/**</span><br />
+			<span class="space" /><span class="comments">* THE CODE OF US</span><br />
+			<span class="space" /><span class="comments">*/</span><br />
+
+			Hey Deviji...<br />
+
+			It started as something arranged....<br />
+			but it never really felt that way.<br /><br />
+
+			Since then,<br />
+			we've met a few times,<br />
+			talked almost every day,<br />
+			and somewhere in between,<br />
+			you started feeling… familiar<br /><br />
+
+			<span class="comments">// Maybe you were right —</span><br />
+			<span class="comments">// maybe we've known each other before,</span><br />
+
+			because being with you feels<br />
+			a little too easy,<br />
+			a little too natural.<br /><br />
+
+			<span class="comments">// there's something about you</span><br />
+			<span class="comments">// that just stays.</span><br /><br />
+
+			Each time we meet,<br />
+			it feels a little more comfortable,<br />
+			a little more right.<br /><br />
+
+			I may not have big words for it yet,<br /><br />
+
+			but I do know this —<br /><br />
+
+			<strong style="color: #e0ecff;">
+				I look forward to you,<br />
+				every single day, Deviji....
+			</strong><br /><br />
+
+			<span class="comments">// some moments of you…</span><br /><br />
+
+			<div class="photoTrigger" data-img="IMG_8859.JPG" data-caption="somewhere between your words and your smile… this stayed">
+				this moment of you
+			</div>
+
+			<div class="photoTrigger" data-img="IMG_8860.JPG" data-caption="somehow… the flower isn’t the prettiest thing here">
+				and this one too
+			</div>
+		</div>
+
+		<!-- RIGHT SIDE HEART -->
+		<div id="loveHeart">
+			<canvas id="garden"></canvas>
+
+			<div id="words">
+				<div id="messages">
+					<div id="elapseClock"></div>
+				</div>
+
+				<div id="loveu">
+					maybe this is the start<br />
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<!-- Fullscreen overlay (outside mainDiv so it renders on top) -->
+<div id="photoOverlay">
+	<span id="photoClose"><i class="fas fa-times"></i></span>
+	<img id="photoOverlayImg" src="" alt="" />
+	<div id="photoCaption"></div>
+</div>
+
+<script type="text/javascript">
+
+// Photo overlay interaction — uses event delegation so it works after typewriter rebuilds DOM
+var overlay = document.getElementById("photoOverlay");
+var overlayImg = document.getElementById("photoOverlayImg");
+var overlayCaption = document.getElementById("photoCaption");
+
+document.addEventListener("click", function (e) {
+	var trigger = e.target.closest(".photoTrigger");
+	if (trigger) {
+		overlayImg.src = trigger.getAttribute("data-img");
+		overlayCaption.textContent = trigger.getAttribute("data-caption");
+		overlay.classList.add("active");
+	}
+});
+
+document.getElementById("photoClose").addEventListener("click", function (e) {
+	e.stopPropagation();
+	overlay.classList.remove("active");
+	overlayImg.src = "";
+});
+
+overlay.addEventListener("click", function (e) {
+	if (e.target === overlay) {
+		overlay.classList.remove("active");
+		overlayImg.src = "";
+	}
+});
+
+
+// ❤️ Heart animation setup
+var offsetX = $("#loveHeart").width() / 2;
+var offsetY = $("#loveHeart").height() / 2 - 55;
+
+// ✅ YOUR ACTUAL DATE
+var together = new Date();
+together.setFullYear(2026, 2, 14);
+together.setHours(13);
+together.setMinutes(45);
+together.setSeconds(0);
+together.setMilliseconds(0);
+
+
+// Browser fallback
+if (!document.createElement('canvas').getContext) {
+	var msg = document.createElement("div");
+	msg.id = "errorMsg";
+	msg.innerHTML = "Your browser doesn't support HTML5!";
+	document.body.appendChild(msg);
+	$("#code").css("display", "none");
+	document.execCommand("stop");
+} else {
+	setTimeout(function () {
+		startHeartAnimation();
+	}, 5000);
+
+	timeElapse(together);
+
+	setInterval(function () {
+		timeElapse(together);
+	}, 500);
+
+	adjustCodePosition();
+	$("#code").typewriter();
+}
+
+</script>
+
+</body>
+</html>
